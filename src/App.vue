@@ -5,7 +5,8 @@
         <quill-editor
           ref="myQuillEditor"
           v-model="content"
-          :options="editorOption">
+          :options="editorOption"
+          @change="onEditorChange($event)">
           <div id="toolbar" slot="toolbar">
             <button @click="annotate('user')"><b-icon icon="directions_walk"></b-icon></button>
             <button @click="annotate('container')"><b-icon icon="extension"></b-icon></button>
@@ -20,64 +21,34 @@
     </div>
 
 
-
+    <div>
+      <pre>
+        {{changes}}
+      </pre>
+      Container:
+      <pre>{{container}}
+      </pre>
+      User:
+      <pre>{{user}}
+      </pre>
+      User:
+      <pre>
+      </pre>
+    </div>
   </div>
 </template>
 
 <script>
 import { quillEditor } from 'vue-quill-editor'
 import 'buefy/lib/buefy.css'
-{
-  if (!window.Quill) {
-    window.Quill = require('quill/dist/quill.js')
-  }
-  var quill = window.Quill
-  console.log(Quill)
-  var Inline = Quill.import('blots/inline');
+import {initialiseQuillEditor, makeInlineBlot} from './editorUtils'
+import { mapGetters } from 'vuex'
 
-  class User extends Inline{
-    static create() {
-      return super.create();
-    }
+import $ from "jquery"
 
-    static formats() {
-      return true;
-    }
-
-    optimize() {
-      super.optimize();
-      if (this.domNode.tagName !== this.statics.tagName[0]) {
-        this.replaceWith(this.statics.blotName);
-      }
-    }
-  }
-
-  User.blotName = 'user';
-  User.tagName = ['USER'];
-
-    class Container extends Inline{
-    static create() {
-      return super.create();
-    }
-
-    static formats() {
-      return true;
-    }
-
-    optimize() {
-      super.optimize();
-      if (this.domNode.tagName !== this.statics.tagName[0]) {
-        this.replaceWith(this.statics.blotName);
-      }
-    }
-  }
-
-  Container.blotName = 'container';
-  Container.tagName = ['CONTAINER'];
-
-  Quill.register(User, true);
-  Quill.register(Container, true);
-}
+initialiseQuillEditor();
+Quill.register(makeInlineBlot("user", ['user']), true)
+Quill.register(makeInlineBlot("container", ['container']), true)
 
 export default {
   
@@ -89,26 +60,52 @@ export default {
         modules: {
           toolbar: '#toolbar'
         }
-      }
+      },
     }
   },
   components: {
     'quillEditor': quillEditor
+  },
+  computed:{
+    changes(){return this.$store.state.changes},
+    container(){return $("container", $(this.content))},
+    user(){return $("user", $(this.content))}
+
   },
   methods:{
     customButtonClick() {
       alert(`You can custom the button and listen click event to do something...\n你可以定义一些自定义按钮做你想做的事，如上传图片至第三方存储...等等`)
     },
     annotate(option){
-      var quill = this.$refs.myQuillEditor.quill
-      var selectionRange = quill.selection.lastRange;
+      let quill = this.$refs.myQuillEditor.quill;
+      let selectionRange = quill.getSelection();
+
       console.log(option);
-      if(selectionRange != null){
-        quill.formatText(selectionRange.index, selectionRange.length, {[option]: true})
-        console.log(quill.getFormat());
+      function isStart(index) {
+        return quill.getFormat(index - 1) [option] == null;
       }
 
+      function isEnd(index, length) {
+        return quill.getFormat(index + length + 1) [option] == null;
+      }
 
+      if(selectionRange != null){
+        let format  = quill.getFormat(selectionRange.index, selectionRange.length);
+        let index   = selectionRange.index;
+        let length  = selectionRange.length;
+
+        if(format[option]){
+          console.log(index);
+          debugger;
+          if(!isStart(index)) while(!isStart(--index) && index > 0);
+          console.log(index);
+        }
+
+        quill.formatText(selectionRange.index, selectionRange.length, {[option]: !format[option]})
+      }
+    },
+    onEditorChange($e){
+      console.log($e);
     }
   }
 
@@ -120,7 +117,7 @@ export default {
   .ql-container .ql-editor {
     min-height: 20em;
     padding-bottom: 1em;
-    max-height: 25em;
+    // max-height: 25em;
   }
   .html {
     height: 9em;
