@@ -79,29 +79,48 @@ export default {
     annotate(option){
       let quill = this.$refs.myQuillEditor.quill;
       let selectionRange = quill.getSelection();
+      let self = this;
 
       console.log(option);
       function isStart(index) {
-        return quill.getFormat(index - 1) [option] == null;
+        return quill.getFormat(index - 1, 1) [option] == null;
       }
 
       function isEnd(index, length) {
         return quill.getFormat(index + length + 1) [option] == null;
       }
 
+      function findStart(index) {
+        while (!isStart(index) && index >= 0) index--;
+        return index;
+      }
+
+      function findLength(index, length) {
+        length = length || 0;
+        while (!isEnd(index, length) && length < self.content.length) length++;
+        return length;
+      }
+
       if(selectionRange != null){
-        let format  = quill.getFormat(selectionRange.index, selectionRange.length);
-        let index   = selectionRange.index;
-        let length  = selectionRange.length;
+        let format         = quill.getFormat(selectionRange.index, selectionRange.length);
+        let selectedIndex  = selectionRange.index;
+        let selectedLength = selectionRange.length;
 
         if(format[option]){
-          console.log(index);
-          debugger;
-          if(!isStart(index)) while(!isStart(--index) && index > 0);
-          console.log(index);
+          let start  = findStart (selectedIndex);
+          let length = findLength(start);
+          let end = start + length;
+          let selectedEnd = selectedIndex + selectedLength;
+
+          //if selection in center is selected
+          if(selectedIndex != start && selectedEnd != end){
+            selectedIndex  = start;
+            selectedLength = length;
+          }
+
         }
 
-        quill.formatText(selectionRange.index, selectionRange.length, {[option]: !format[option]})
+        quill.formatText(selectedIndex, selectedLength, {[option]: !format[option]})
       }
     },
     onEditorChange($e){
