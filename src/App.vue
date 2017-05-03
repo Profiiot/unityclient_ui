@@ -1,26 +1,33 @@
 <template lang="pug">
   #app
-    #appContent.columns
-      #editorColumn.column.is-one-third
-        h1#documentTitle.title.edited Title
-        editor
-      .column.is-two-quarter  {{content}}
-      #debug.column.is-one-quarter
-        div
-          pre.
-            \n        {{changes}}
-
-          |  Container:
-          pre.
-            \n{{container}}
-
-          |  User:
-          pre.
-            \n{{user}}
-
-          |  User:
-          pre.
-            \n
+    .container
+      Title
+    section
+      #appContent.tile.is-ancestor.is-fullwidth
+        .tile.is-vertical.is-4.is-paddingless.is-marginless
+          .tile
+            .tile.is-parent.is-vertical
+              article.tile.is-child.notification
+                .content
+                  p#documentTitle.title.edited Title
+              article.tile.is-child#editorColumn
+                editor
+        .tile.is-parent.is-paddingless.is-marginless
+          .tile
+            article.tile.is-child.notification.is-info
+              .content
+                p.title Map
+                p.subitle Map
+                .content Stuff
+        #debugTile.tile.is-parent.is-paddingless.is-marginless.is-2(
+          v-if="debug")
+          .tile
+            article.tile.is-child.notification.is-danger
+              .content
+                p.title Debug
+                p.subitle Map
+                .content Stuff
+    button(@click="switchDebug") Debug
 </template>
 
 <script>
@@ -35,13 +42,7 @@ export default {
   name: 'app',
   data () {
     return {
-      content: '<p>I am an Example</p>',
-      editorOption: {
-        modules: {
-          toolbar: '#toolbar'
-        },
-        theme: 'bubble'
-      },
+      debug: true,
     }
   },
   components: {
@@ -54,45 +55,48 @@ export default {
 
   },
   methods:{
-
+    switchDebug(){
+      this.debug = !this.debug;
+    }
   }
 
 }
 </script>
 
-<style lang="scss">
-@import 'assets/custom_buefy';
-@import "assets/constants";
-#editorColumn{
-  background-color: $editorBackground;
-  color:#fff;
-}
+<style lang="sass">
+@import './assets/custom_buefy';
+@import "./assets/constants";
 
-.html {
-  height: 9em;
-  overflow-y: auto;
-  border: 1px solid #ccc;
-  border-top: none;
-  resize: vertical;
-}
-#appContent{
-  position: absolute;
-  top: 0;
-  bottom: 0;
-  width: 100%;
-}
+*
+  transition-duration: 250ms
 
-#documentTitle{
-  &.edited{
-    &:after {
-      content: ' \2013 Edited';
-      opacity: .5;
-    }
-    &:before {
-      font-family: "Material Icons";
-      content: '\E313';
-      opacity: .5;
-    }
-  }
-}
+#editorColumn
+  background-color: $editorBackground
+  color: #fff
+
+
+
+#app
+  position: absolute
+  top: 10px //TODO: find the problem. Don't fix the symptom
+
+#documentTitle
+  /*background: darkgrey*/
+  color: #3b3b3b
+  &.edited
+    &:after
+      content: ' \2013 Edited'
+      opacity: .5
+
+    &:before
+      font-family: "Material Icons"
+      content: '\E313'
+      opacity: .5
+
+.tile
+  &.is-vertical
+    flex-direction: column
+    & > .tile.is-child:not(:last-child)
+      margin-bottom: 0 !important
+
 </style>

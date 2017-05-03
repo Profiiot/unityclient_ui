@@ -85,4 +85,9 @@ Vagrant.configure("2") do |config|
     cd /vagrant
     npm i
   SHELL
+
+  config.vm.provision "shell", run:"always", inline: <<-SHELL
+    cd /vagrant
+    npm run dev
+  SHELL
 end

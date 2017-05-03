@@ -27,11 +27,14 @@
 
 <script>
   import { quillEditor } from 'vue-quill-editor';
-  import {initialiseQuillEditor, makeInlineBlot} from '../editorUtils';
+  import {initialiseQuillEditor, makeInlineBlot} from './editorUtils';
   import { mapGetters, mapMutations } from 'vuex';
   import $ from "jquery";
+  import ChariotTheme from 'quill/themes/ChariotTheme'
 
   initialiseQuillEditor();
+
+  Quill.register({"themes/chariot": ChariotTheme});
 
   let containerTypes = ["user", "container", "location", "date"];
   containerTypes.map(tag => {
@@ -65,7 +68,7 @@
           modules: {
             toolbar: '#toolbar'
           },
-          theme: 'bubble'
+          theme: 'chariot'
         },
       }
     },
@@ -113,7 +116,7 @@
           return length;
         }
 
-        if(selectionRange != null){
+        if(selectionRange !== null){
           let format         = quill.getFormat(selectionRange.index, selectionRange.length);
           let selectedIndex  = selectionRange.index;
           let selectedLength = selectionRange.length;
@@ -126,7 +129,7 @@
             let selectedEnd = selectedIndex + selectedLength;
 
             //if selection in center is selected
-            if(selectedIndex != start && selectedEnd != end){
+            if(selectedIndex !== start && selectedEnd !== end){
               selectedIndex  = start;
               selectedLength = length;
             }
@@ -146,87 +149,82 @@
   }
 </script>
 
-<style lang="scss">
- @import "../assets/constants";
+<style lang="sass">
+@import "../assets/constants";
 
-  .ql-container .ql-editor {
-    min-height: 20em;
-    padding-bottom: 1em;
-    font-family: "Courier";
-    counter-reset: section;
-    // max-height: 25em;
-    p {
-      border-left: 2pt solid rgba(255,255,255, .1);
-      padding-left: 1em;
-      margin-left: 1em;
-      padding-bottom: 1em;
-    }
-    h2, h3 {
-      font-weight: bold;
-      color: $sectionTitleColor;
-      counter-increment: section;
-      &:before{
-        content: counter(section)  ' ';
-      }
-      &:after{
-        font-family: "Material Icons";
-        position: absolute;
-        left: .5em;
-        display: block;
-        content: '\E313';
-        height: 1em;
-        vertical-align: bottom;
-      }
-    }
-  }
-  .ql-toolbar .ql-formats button {
-    &.user {
-      color: $userColor;
-    }
-    &.location {
-      color: $locationColor;
-    }
-    &.container {
-      color: $containerColor;
-    }
-    &.date {
-      color: $dateColor;
-    }
-  }
 
-  User {
-    border-color: $userColor;
-    .active {
-      background-color: $userColor;
-    }
-  }
+.ql-container .ql-editor
+  min-height: 20em
+  /*padding-bottom: 1em;*
+  font-family: "Courier",monospace
+  counter-reset: section
+  // max-height: 25em
 
-  Location {
-    border-color: $locationColor;
-    .active {
-      background-color: $locationColor;
-    }
-  }
+  p
+    border-left: 2pt solid rgba(255,255,255, .1)
+    padding-left: 1em
+    margin-left: 1em
+    padding-bottom: 1em
 
-  Container {
-    border-color: $containerColor;
-    .active {
-      background-color: $containerColor;
-    }
-  }
+  h2, h3
+    font-weight: bold
+    color: $sectionTitleColor
+    counter-increment: section
+    &:before
+      content: counter(section)  ' '
+    &:after
+      font-family: "Material Icons"
+      position: absolute
+      left: .5em
+      display: block
+      content: '\E313'
+      height: 1em
+      vertical-align: bottom
 
-  Date {
-    border-color: $dateColor;
-    .active {
-      background-color: $dateColor;
-    }
-  }
 
-  User, Container, Location, Date {
-    border-width: 1pt;
-    border-style: solid;
-    border-radius: 3pt;
-    padding-left:5pt;
-    padding-right:5pt;
-  }
+
+.ql-toolbar .ql-formats button
+  &.user
+    color: $userColor
+  &.location
+    color: $locationColor
+  &.container
+    color: $containerColor
+  &.date
+    color: $dateColor
+
+
+User
+  border-color: $userColor
+  .active
+    background-color: $userColor
+
+
+Location
+  border-color: $locationColor
+  .active
+    background-color: $locationColor
+
+
+Container
+  border-color: $containerColor
+  .active
+    background-color: $containerColor
+
+Date
+  border-color: $dateColor
+  .active
+    background-color: $dateColor
+
+User, Container, Location, Date
+  border-width: 1pt
+  border-style: solid
+  border-radius: 3pt
+  padding-left: 5pt
+  padding-right: 5pt
+
+/*#toolbar*/
+  /*position: absolute*/
+  /*right: 0px*/
+
 </style>
