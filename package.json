@@ -16,7 +16,8 @@
     "vue": "^2.2.1",
     "vue-quill-editor": "^2.1.4",
     "vuex": "^2.3.1",
-    "extend": "latest"
+    "extend": "latest",
+    "chariot-quill-theme": "https://github.com/Profiiot/chariot-quill-theme.git"
   },
   "devDependencies": {
     "babel-core": "^6.0.0",

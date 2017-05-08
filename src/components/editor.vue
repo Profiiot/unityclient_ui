@@ -15,11 +15,11 @@
             b-icon(icon='add_location')
           button.date(@click="annotate('date')")
             b-icon(icon='list')
-        .ql-formats(slot='toolbar')
-          select.ql-header
-            option(selected='')
-            option(value='2')
-            option(value='3')
+      #tooltip
+        .ql-tooltip-arrow
+        .ql-tooltip-editor
+          input(type="text" data-formula="e=mc^2" data-link="https://quilljs.com" data-video="Embed URL")
+          a(class="ql-close")
 
 
 
@@ -30,7 +30,8 @@
   import {initialiseQuillEditor, makeInlineBlot} from './editorUtils';
   import { mapGetters, mapMutations } from 'vuex';
   import $ from "jquery";
-  import ChariotTheme from 'quill/themes/ChariotTheme'
+  import {ChariotTheme} from 'chariot-quill-theme'
+//  import  '../assets/chariotTheme.styl'
 
   initialiseQuillEditor();
 
@@ -150,8 +151,7 @@
 </script>
 
 <style lang="sass">
-@import "../assets/constants";
-
+@import "../assets/constants.scss"
 
 .ql-container .ql-editor
   min-height: 20em
@@ -180,7 +180,6 @@
       content: '\E313'
       height: 1em
       vertical-align: bottom
-
 
 
 .ql-toolbar .ql-formats button

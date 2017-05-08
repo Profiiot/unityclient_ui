@@ -1,0 +1,109 @@
+themeName = 'chariot'
+activeColor = #fff
+borderColor = #777
+backgroundColor = #444
+inactiveColor = #ccc
+shadowColor = #ddd
+textColor = #fff
+arrowWidth = 6px
+
+@import '~quill/assets/core'
+@import '~quill/assets/base'
+
+.ql-container.ql-chariot:not(.ql-disabled)
+  a
+    position: relative
+    white-space: nowrap
+  a::before
+      background-color: #444
+      border-radius: 15px
+      top: -5px
+      font-size: 12px
+      color: #fff
+      content: attr(href)
+      font-weight: normal
+      overflow: hidden
+      padding: 5px 15px
+      text-decoration: none
+      z-index: 1
+  a::after
+      border-top: 6px solid #444
+      border-left: 6px solid transparent
+      border-right: 6px solid transparent
+      top: 0
+      content: " "
+      height: 0
+      width: 0
+  a::before, a::after
+      left: 0
+      margin-left: 50%
+      position: absolute
+      transform: translate(-50%, -100%)
+      transition: visibility 0s ease 200ms
+      visibility: hidden
+  a:hover::before, a:hover::after
+    visibility: visible
+
+
+
+
+.ql-chariot
+  .ql-tooltip
+    background-color: backgroundColor
+    border-radius: 25px
+    color: textColor
+  .ql-tooltip-arrow
+    border-left: arrowWidth solid transparent
+    border-right: arrowWidth solid transparent
+    content: " "
+    display: block
+    left: 50%
+    margin-left: -1 * arrowWidth
+    position: absolute
+  .ql-tooltip:not(.ql-flip) .ql-tooltip-arrow
+    border-bottom: arrowWidth solid backgroundColor
+    top: -1 * arrowWidth
+  .ql-tooltip.ql-flip .ql-tooltip-arrow
+    border-top: arrowWidth solid backgroundColor
+    bottom: -1 * arrowWidth
+
+  .ql-tooltip.ql-editing
+    .ql-tooltip-editor
+      display: block
+    .ql-formats
+      visibility: hidden
+
+  .ql-tooltip-editor
+    display: none
+    input[type=text]
+      background: transparent
+      border: none
+      color: textColor
+      font-size: 13px
+      height: 100%
+      outline: none
+      padding: 10px 20px
+      position: absolute
+      width: 100%
+    a
+      &:before
+        color: inactiveColor
+        content: "\00D7"
+        font-size: 16px
+        font-weight: bold
+      top: 10px
+      position: absolute
+      right: 20px
+
+.ql-chariot
+  .ql-toolbar
+    .ql-formats
+      margin: 8px 12px 8px 0px
+    .ql-formats:first-child
+      margin-left: 12px
+
+  .ql-color-picker
+    svg
+      margin: 1px
+    .ql-picker-item.ql-selected, .ql-picker-item:hover
+      border-color: activeColor
