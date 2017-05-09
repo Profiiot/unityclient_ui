@@ -20,6 +20,9 @@
         .ql-tooltip-editor
           input(type="text" data-formula="e=mc^2" data-link="https://quilljs.com" data-video="Embed URL")
           a(class="ql-close")
+    nav.level
+      .level-item.hass-text-centered
+        i#addChapterButton.fa.fa-plus-circle(@click="content = content + '<h2>mehr</h2><p>This is a story</p>'")
 
 
 
@@ -30,7 +33,7 @@
   import {initialiseQuillEditor, makeInlineBlot} from './editorUtils';
   import { mapGetters, mapMutations } from 'vuex';
   import $ from "jquery";
-  import {ChariotTheme} from 'chariot-quill-theme'
+  import {ChariotTheme} from 'chariot-quill-theme';
 //  import  '../assets/chariotTheme.styl'
 
   initialiseQuillEditor();
@@ -49,20 +52,13 @@
     data () {
       return {
         content:
-            "<h2>Termin und Filter</h2>" +
-            "<p>Tom erhält zusätzliche Termininformation hinsichtlich des anstehenden Abendessens. " +
-            "Da Tom mit Emma, Ana und Paul auf Facebook befreundet ist, erkennt sein Kundenkonto " +
-            "aufgrund der Einträge automatisch das Emma gerade Lowcarb isst und Ana ein " +
-            "Nussallergie hat. Der Assistent fragt ob diese Informationen bei der Rezeptwahl " +
-            "Beachtung finden sollen und ob es noch weitere Dinge gibt die beachtet werden müssen. " +
-            "Tom aktiviert weitere Filter.</p>" +
-            "<h2>Menge festlegen und bestellen</h2>" +
-            "Tom entscheidet sich für eine Rezeptinsel und gibt Anzahl der Portionen ein. Er " +
-            "bestättig die Menge und Preis. Informationen werden an das Lager gesendet. Die " +
-            "Zutaten kann er anschließend zusammen mit den Basisprodukten abholen.  Tom hat ein " +
-            "Budget von 200 Euro im Monat angelegt. Tom  kann somit jederzeit überprüfen wie viel " +
-            "er für seinen derzeitigen Einkauf bezahlen muss und wie viel er bereits in dem Monat " +
-            "ausgegeben hat."
+            "<h2>Registrierung</h2> " +
+            "<p><user>Lisa</user> eröffnet ein <date>Kundenkonto</date> " +
+            "bei \"<container>Cybershop</container>\". Hierzu lädt sie sich die <container> " +
+            "CyberShop-App</container> herunter und reistriert sich als <user>Kunde</user>. " +
+            "Sie hinterlegt ihre <date>Adressdaten</date>, <date>Kreditkartendaten</date> " +
+            "und wählt ihren bevorzugten <date>Versanddienstleister</date> aus, sowie ihre " +
+            "präferierten <date>Lieferzeiträume</date></p>"
         ,
 
         editorOption: {
@@ -151,36 +147,53 @@
 </script>
 
 <style lang="sass">
+@import "../assets/custom_buefy"
 @import "../assets/constants.scss"
 
+@font-face
+  font-family: "Noto"
+  src: url('../assets/fonts/NotoSerif-Regular.ttf') format("truetype")
+
+@font-face
+  font-family: "Yrsa Light"
+  src: url('../assets/fonts/Yrsa-Light.otf') format("opentype")
+
+@font-face
+  font-family: "Fira Sans"
+  src: url('../assets/fonts/FiraSans-Regular.otf') format("opentype")
+  font-weight: 800
+
 .ql-container .ql-editor
-  min-height: 20em
+  /*min-height: 20em*/
   /*padding-bottom: 1em;*
-  font-family: "Courier",monospace
+  font-family: "Yrsa Light", monospace
   counter-reset: section
-  // max-height: 25em
+  font-size: $body-size
 
   p
-    border-left: 2pt solid rgba(255,255,255, .1)
+    /*border-left: 2pt solid rgba(255,255,255, .1)*/
     padding-left: 1em
     margin-left: 1em
     padding-bottom: 1em
 
   h2, h3
-    font-weight: bold
-    color: $sectionTitleColor
     counter-increment: section
-    &:before
-      content: counter(section)  ' '
+    font-family: "Fira Sans"
+    margin-left: 1em
+    padding-left: 1em
+    font-size: $body-size !important
+
     &:after
-      font-family: "Material Icons"
+      content: counter(section)  ' '
       position: absolute
       left: .5em
-      display: block
-      content: '\E313'
-      height: 1em
-      vertical-align: bottom
+      width: 2em
+      text-align: right
 
+
+#addChapterButton
+  color: #f3cb3b
+  font-size: $size-3
 
 .ql-toolbar .ql-formats button
   &.user
@@ -194,33 +207,33 @@
 
 
 User
-  border-color: $userColor
+  color: $userColor
   .active
     background-color: $userColor
 
 
 Location
-  border-color: $locationColor
+  color: $locationColor
   .active
     background-color: $locationColor
 
 
 Container
-  border-color: $containerColor
+  color: $containerColor
   .active
     background-color: $containerColor
 
 Date
-  border-color: $dateColor
+  color: $dateColor
   .active
     background-color: $dateColor
 
 User, Container, Location, Date
-  border-width: 1pt
-  border-style: solid
-  border-radius: 3pt
-  padding-left: 5pt
-  padding-right: 5pt
+  /*border-width: 1pt*/
+  /*border-style: solid*/
+  /*border-radius: 3pt*/
+  /*padding-left: 5pt*/
+  /*padding-right: 5pt*/
 
 /*#toolbar*/
   /*position: absolute*/

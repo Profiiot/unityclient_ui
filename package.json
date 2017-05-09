@@ -10,14 +10,14 @@
   },
   "dependencies": {
     "buefy": "^0.2.1",
+    "chariot-quill-theme": "https://github.com/Profiiot/chariot-quill-theme.git",
     "electron": "^1.6.6",
+    "extend": "latest",
     "jquery": "^3.2.1",
     "quill": "^1.2.4",
     "vue": "^2.2.1",
     "vue-quill-editor": "^2.1.4",
-    "vuex": "^2.3.1",
-    "extend": "latest",
-    "chariot-quill-theme": "https://github.com/Profiiot/chariot-quill-theme.git"
+    "vuex": "^2.3.1"
   },
   "devDependencies": {
     "babel-core": "^6.0.0",
@@ -26,6 +26,7 @@
     "babel-preset-stage-3": "^6.24.1",
     "cross-env": "^3.0.0",
     "css-loader": "^0.25.0",
+    "extract-text-webpack-plugin": "^2.1.0",
     "file-loader": "^0.9.0",
     "node-sass": "^4.5.0",
     "pug": "^2.0.0-beta.12",
